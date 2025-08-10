@@ -1,0 +1,10 @@
+{
+	"InstallScripts" : 
+	[
+		"C:/Users/aper1/Documents/Visual Studio Code/general_c/Rocket Lander Simulation/build/cmake_install.cmake",
+		"C:/Users/aper1/Documents/Visual Studio Code/general_c/Rocket Lander Simulation/build/libs/glfw/cmake_install.cmake",
+		"C:/Users/aper1/Documents/Visual Studio Code/general_c/Rocket Lander Simulation/build/libs/glfw/src/cmake_install.cmake",
+		"C:/Users/aper1/Documents/Visual Studio Code/general_c/Rocket Lander Simulation/build/libs/glfw/docs/cmake_install.cmake"
+	],
+	"Parallel" : false
+}
