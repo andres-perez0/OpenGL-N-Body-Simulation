@@ -39,26 +39,47 @@ struct obj {
     }
 
     void updateKinematics(float deltaTime) {
-        this->velocity[0] += this->acceleration[0]  * deltaTime;
-        this->velocity[1] += this->acceleration[1]  * deltaTime;
+        this->velocity[0] += 7* this->acceleration[0]  * deltaTime;
+        this->velocity[1] += 7* this->acceleration[1]  * deltaTime;
 
-        this->position[0] += 2* this->velocity[0]      * deltaTime;
-        this->position[1] += 2* this->velocity[1]      * deltaTime;
+        this->position[0] += this->velocity[0]      * deltaTime;
+        this->position[1] += this->velocity[1]      * deltaTime;
     }
 
     void checkBoundaries() {
-        if ((this->position[1] - this->radius) < 0 || (this->position[1] + this->radius) > SCR_HEIGHT) {
-            this->velocity[1] *= -0.9;
+        float reverseVelocity=-0.95;
+        if ((this->position[1] - this->radius) < 0 ) {
+            this->velocity[1] *= reverseVelocity;
+            this->position[1] = this->radius;
         }
-        if ((this->position[0] - this->radius) < 0 || (this->position[0] + this->radius) > SCR_WIDTH) {
-            this->velocity[0] *= -0.9;
+
+        if ((this->position[1] + this->radius) > SCR_HEIGHT) {
+            this->velocity[1] *= reverseVelocity;
+            this->position[1] = SCR_HEIGHT - this->radius;
+        }
+
+        if ((this->position[0] - this->radius) < 0 ) {
+            this->velocity[0] *= reverseVelocity;
+            this->position[0] = this->radius;
+        }
+
+        if ((this->position[0] + this->radius) > SCR_WIDTH) {
+            this->velocity[0] *= reverseVelocity;
+            this->position[0] = SCR_WIDTH - this->radius;
         }
     }
 
+    float centerFromDistance(float x_1, float y_1, float x_2, float y_2) {
+        return std::sqrt((x_2-x_1)*(x_2-x_1) + (y_2-y_1)*(y_2-y_1));
+    }
+
     void checkCollision(obj& obj2) {
-        if (this->position[1] + this->radius <= obj2.position[1] + obj2.radius) {
-            this->velocity[1] *= -0.9;
-            obj2.velocity[1] *= -0.9;
+        float minCollisionDistance = this->radius + obj2.radius;
+        float currentCollisionDistance = centerFromDistance(this->position[0], this->position[1], obj2.position[0], obj2.position[1]);
+
+        if (currentCollisionDistance <= minCollisionDistance) {
+            this->velocity[1] *= -1;
+            obj2.velocity[1] *= -1;
         }
     }
 
@@ -91,19 +112,21 @@ int main() {
     float centerX = SCR_WIDTH/2.0f;
     float centerY = SCR_HEIGHT/4.0f;
     std::vector<float> position = {centerX, centerY};
-    std::vector<float> velocity = {1.0f, 0.0f};
+    std::vector<float> velocity = {0.0f, 0.0f};
     std::vector<float> acceleration = {0, -9.81f};
     float radius = 50.0f;
     int res =100;
 
     std::vector<obj> objects = {
-        obj({centerX, 450.0f}, {0.0f, 0.0f}, acceleration, 30.0f, 20),
-        obj({centerX, 200.0f}, {0.0f, 0.0f}, acceleration, 40.0f, 50)
+        obj({centerX, 450.0f}, velocity, acceleration, 30.0f, 20),
+        obj({centerX, 200.0f}, velocity, acceleration, 40.0f, 50)
     };
     
     float lastTime=glfwGetTime();
     float currentTime, deltaTime;
     int i, j;
+
+    glfwSwapInterval(1);
 
     while (!glfwWindowShouldClose(window)) {
         processInput(window);
@@ -112,10 +135,10 @@ int main() {
         deltaTime = currentTime - lastTime;
         lastTime = currentTime;
 
-        // Update the kinematics first and then check boundaries
+        // Update the kinematics first
         for (auto& obj : objects) {
             obj.updateKinematics(deltaTime);
-            obj.checkBoundaries();
+            
         }
 
         // Check for position between all unique pairs 
@@ -123,6 +146,7 @@ int main() {
             for (j = i+1; j < objects.size(); j++) {
                 objects[i].checkCollision(objects[j]);
             }
+            objects[i].checkBoundaries();
         }
 
         // Draw after everything is calculated
