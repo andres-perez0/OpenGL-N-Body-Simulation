@@ -26,19 +26,22 @@ struct obj {
     std::vector<float> velocity;
     std::vector<float> acceleration; 
 
-    obj (std::vector<float> pos, std::vector<float> vel, std::vector<float> acc, float r) {
-        this->position = pos;
-        this->velocity = vel;
-        this->acceleration = acc;
-        this->radius = r;
-        this->res=150.0f;
+    obj (std::vector<float> pos, std::vector<float> vel, std::vector<float> acc, float r, float m) {
+        this->position      = pos;
+        this->velocity      = vel;
+        this->acceleration  = acc;
+        this->radius        = r;
+        this->mass          = m;
+        this->res           = 150.0f;
     }
 
-    void updateKinematics() {
-        this->position[0] += this->velocity[0];
-        this->velocity[0] += this->acceleration[0];
-        this->position[1] += this->velocity[1];
-        this->velocity[1] += this->acceleration[1];
+    void updateKinematics(float deltaTime) {
+        this->velocity[0] += this->acceleration[0]  * deltaTime;
+        this->velocity[1] += this->acceleration[1]  * deltaTime;
+        this->position[0] += this->velocity[0]      * deltaTime;
+        this->position[1] += this->velocity[1]      * deltaTime;
+        
+        
     }
 
     void checkBoundaries() {
@@ -85,23 +88,24 @@ int main() {
     float radius = 50.0f;
     int res =100;
 
-    glfwSwapInterval(1);
-
     std::vector<obj> objects = {
-        obj(position, velocity, acceleration, radius),
-        obj({400.0f, 300.0f}, velocity, acceleration, 30.0f)
+        obj(position, velocity, acceleration, radius, 100),
+        obj({400.0f, 300.0f}, velocity, acceleration, 30.0f, 100)
     };
     
+    float lastTime=glfwGetTime();
+    float currentTime, deltaTime;
+
     while (!glfwWindowShouldClose(window)) {
-        // glClearColor(0.2f, 0.3f, 0.3f, 1.0f); // Set background color
-        glClear(GL_COLOR_BUFFER_BIT);
+        currentTime = glfwGetTime();
+        deltaTime = currentTime - lastTime;
+        lastTime = currentTime;
 
-        // glColor3f(1.0f, 1.0f, 1.0f); // Set drawing color to white
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-        // glClear(GL_COLOR_BUFFER_BIT);
         for (auto& obj : objects) {
             obj.checkBoundaries();
-            obj.updateKinematics();
+            obj.updateKinematics(deltaTime);
             obj.drawCircle();
         }
         

@@ -61,3 +61,33 @@ Vector2D& operator+=(const Vector2D& other) {
     - X: + right      - left
     - Z: + towards    - alway
 
+- Reminder: Range-Based Loops in C
+    - `for (auto& element : container)` - simplifies iterating over collections of elements
+        - `auto` means the compiler automatically determines the data type of the `element`
+        - `&` means that you're addressing by reference the actual item element in the container, not a copy
+- `cmath` vs `math`
+    - `cmath` is just the cpp friendly version of `math` that places all the math functions into `namespace` requiring you to used `std::` before identify any math functionality like `std::sqrt()`
+     
+
+- `glfwSwapInterval(1)` matches the opengl to your frame rate, for me that's 60Hz, or 60fps, so intuititively, I thought I should divided the acceleration constant by 60 to properly get realistic simulations. However, this is really up to the system and can lead to problems if your system is not at the framerate.
+    - `deltaTime` : concept
+        - Keep track of the last frame's time
+        - Inside the loop, calculate detlaTime
+        - Update all the phyics using deltaTime
+
+```c++
+int main() {
+    glfwSwapInterval(1);
+    ...
+    double lastFrameTime = glfwGetTime();
+
+    while(!glfwWindowShouldClose(window)) {
+        double currentFrameTime = glfwGetTime();
+        double deltaTime = currentFrameTime - lastFrameTime;
+        lastFrametime=currentFrameTime;
+        ... 
+
+    }
+
+}
+```
