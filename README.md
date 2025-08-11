@@ -24,28 +24,40 @@
         return Vector2D(a.x + b.x, a.y + b.y);
     }
 ```
-    - It's more efficient because it avoid the overhead of copying the objects'
-    - `const` keyword is an additional and cruical part of the best practice. It means the function is not modifying object it is referencing.
+- It's more efficient because it avoid the overhead of copying the objects'
+- `const` keyword is an additional and cruical part of the best practice. It means the function is not modifying object it is referencing.
 
-    - In this example, we see `&` in the return type of our compouds assignment operator(`+=`,`-=`).
+- In this example, we see `&` in the return type of our compouds assignment operator(`+=`,`-=`).
 
-    ```cpp
-    Vector2D& operator+=(const Vector2D& other) {
-        this->x += other.x;
-        this->y += other.y;
-        return *this; // Returns a reference to the modified object
-    }
-    ```
+```cpp
+Vector2D& operator+=(const Vector2D& other) {
+    this->x += other.x;
+    this->y += other.y;
+    return *this; // Returns a reference to the modified object
+}
+```
 
-    - Here the return type means the function is returning a reference to an object, not a copy of it.
-        - Specifically, `return *this;` returns a reference to current object (`*this`), which has just been modified. 
+- Here the return type means the function is returning a reference to an object, not a copy of it.
+    - Specifically, `return *this;` returns a reference to current object (`*this`), which has just been modified. 
 
-        - This allows for chaining of operations like `(vec1 += vec2) += vec3`.
+    - This allows for chaining of operations like `(vec1 += vec2) += vec3`.
 
 
-    - Key Points for Source Files
-        - Includes the header
-        - Scope Resolution Operator (::): For each member function, you use the scope resolution operator to tell the compiler that the function belongs to the class
-        - Function Bodies
+- Key Points for Source Files
+    - Includes the header
+    - Scope Resolution Operator (::): For each member function, you use the scope resolution operator to tell the compiler that the function belongs to the class
+    - Function Bodies
 
+- OpenGL uses the right handed system 
+```terminal
+    Y
+    |
+    |----> X
+    / 
+   /
+  z
+```
+    - Y: + up         - down
+    - X: + right      - left
+    - Z: + towards    - alway
 

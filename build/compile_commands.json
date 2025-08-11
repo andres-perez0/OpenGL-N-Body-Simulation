@@ -1,9 +1,9 @@
 [
 {
   "directory": "C:/Users/aper1/Documents/Visual Studio Code/general_c/Rocket Lander Simulation/build",
-  "command": "C:\\msys64\\ucrt64\\bin\\g++.exe  @CMakeFiles/YourOpenGLProject.dir/includes_CXX.rsp -g -std=gnu++17 -o CMakeFiles\\YourOpenGLProject.dir\\main.cpp.obj -c \"C:\\Users\\aper1\\Documents\\Visual Studio Code\\general_c\\Rocket Lander Simulation\\main.cpp\"",
+  "command": "C:\\msys64\\ucrt64\\bin\\g++.exe  @CMakeFiles/gravitySim.dir/includes_CXX.rsp -g -std=gnu++17 -o CMakeFiles\\gravitySim.dir\\main.cpp.obj -c \"C:\\Users\\aper1\\Documents\\Visual Studio Code\\general_c\\Rocket Lander Simulation\\main.cpp\"",
   "file": "C:/Users/aper1/Documents/Visual Studio Code/general_c/Rocket Lander Simulation/main.cpp",
-  "output": "CMakeFiles/YourOpenGLProject.dir/main.cpp.obj"
+  "output": "CMakeFiles/gravitySim.dir/main.cpp.obj"
 },
 {
   "directory": "C:/Users/aper1/Documents/Visual Studio Code/general_c/Rocket Lander Simulation/build/libs/glfw/src",

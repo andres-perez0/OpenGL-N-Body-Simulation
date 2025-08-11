@@ -1,4 +1,4 @@
-C:/Users/aper1/Documents/Visual Studio Code/general_c/Rocket Lander Simulation/build/CMakeFiles/YourOpenGLProject.dir
+C:/Users/aper1/Documents/Visual Studio Code/general_c/Rocket Lander Simulation/build/CMakeFiles/gravitySim.dir
 C:/Users/aper1/Documents/Visual Studio Code/general_c/Rocket Lander Simulation/build/CMakeFiles/edit_cache.dir
 C:/Users/aper1/Documents/Visual Studio Code/general_c/Rocket Lander Simulation/build/CMakeFiles/rebuild_cache.dir
 C:/Users/aper1/Documents/Visual Studio Code/general_c/Rocket Lander Simulation/build/CMakeFiles/list_install_components.dir

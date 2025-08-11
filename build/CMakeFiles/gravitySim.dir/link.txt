@@ -1,0 +1,3 @@
+"C:\Program Files\CMake\bin\cmake.exe" -E rm -f CMakeFiles\gravitySim.dir/objects.a
+C:\msys64\ucrt64\bin\ar.exe qc CMakeFiles\gravitySim.dir/objects.a @CMakeFiles\gravitySim.dir\objects1.rsp
+C:\msys64\ucrt64\bin\g++.exe -g -Wl,--whole-archive CMakeFiles\gravitySim.dir/objects.a -Wl,--no-whole-archive -o gravitySim.exe -Wl,--out-implib,libgravitySim.dll.a -Wl,--major-image-version,0,--minor-image-version,0 @CMakeFiles\gravitySim.dir\linkLibs.rsp

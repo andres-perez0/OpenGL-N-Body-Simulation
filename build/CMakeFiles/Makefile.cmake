@@ -86,7 +86,7 @@ set(CMAKE_MAKEFILE_PRODUCTS
 
 # Dependency information for all targets:
 set(CMAKE_DEPEND_INFO_FILES
-  "CMakeFiles/YourOpenGLProject.dir/DependInfo.cmake"
+  "CMakeFiles/gravitySim.dir/DependInfo.cmake"
   "libs/glfw/CMakeFiles/uninstall.dir/DependInfo.cmake"
   "libs/glfw/src/CMakeFiles/glfw.dir/DependInfo.cmake"
   "libs/glfw/src/CMakeFiles/update_mappings.dir/DependInfo.cmake"

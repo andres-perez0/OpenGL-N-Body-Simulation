@@ -10,13 +10,59 @@
 #include <cmath>
 #include <vector>
 
-#include <math.h>
-
 GLFWwindow *StartGLFW();
 
 // Window dimensions
-const unsigned int SCR_WIDTH=800;
-const unsigned int SCR_HEIGHT=600;
+const unsigned int SCR_WIDTH=1000;
+const unsigned int SCR_HEIGHT=800;
+
+void drawCircle(float x_0, float y_0, float r, float res);
+
+struct obj {
+    float mass;
+    float radius;
+    float res;
+    std::vector<float> position;
+    std::vector<float> velocity;
+    std::vector<float> acceleration; 
+
+    obj (std::vector<float> pos, std::vector<float> vel, std::vector<float> acc, float r) {
+        this->position = pos;
+        this->velocity = vel;
+        this->acceleration = acc;
+        this->radius = r;
+        this->res=150.0f;
+    }
+
+    void updateKinematics() {
+        this->position[0] += this->velocity[0];
+        this->velocity[0] += this->acceleration[0];
+        this->position[1] += this->velocity[1];
+        this->velocity[1] += this->acceleration[1];
+    }
+
+    void checkBoundaries() {
+        if (this->position[1] < 0 || this->position[1] > SCR_HEIGHT) {
+            this->velocity[1] *= -0.9;
+        }
+        if (this->position[0] < 0 || this->position[0] > SCR_WIDTH) {
+            this->velocity[0] *= -0.9;
+        }
+    }
+
+    void drawCircle() {
+        glBegin(GL_TRIANGLE_FAN);
+        glVertex2d(this->position[0],this->position[1]);
+
+        for (int i = 0; i < this->res; i++) {
+            float angle = 2.0f * 3.141592653589 * (static_cast<float>(i)/this->res);
+            float x = this->position[0] + cos(angle) * this->radius;
+            float y = this->position[1] + sin(angle) * this->radius;
+            glVertex2d(x,y);
+        }
+        glEnd();
+    }
+};
 
 int main() {
     GLFWwindow* window = StartGLFW();
@@ -27,34 +73,38 @@ int main() {
     // Setup an orthographic projection for 2D rendering
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
-    glOrtho(0.0, SCR_WIDTH, 0.0, SCR_HEIGHT, -1.0, 1.0);
+    glOrtho(0.0, SCR_WIDTH, 0.0, SCR_HEIGHT, 0, 1);
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
 
     float centerX = SCR_WIDTH/2.0f;
     float centerY = SCR_HEIGHT/2.0f;
+    std::vector<float> position = {centerX, centerY};
+    std::vector<float> velocity = {1.0f, 0.0f};
+    std::vector<float> acceleration = {9.81f, -9.81f};
     float radius = 50.0f;
     int res =100;
 
+    glfwSwapInterval(1);
+
+    std::vector<obj> objects = {
+        obj(position, velocity, acceleration, radius),
+        obj({400.0f, 300.0f}, velocity, acceleration, 30.0f)
+    };
+    
     while (!glfwWindowShouldClose(window)) {
-        glClearColor(0.2f, 0.3f, 0.3f, 1.0f); // Set background color
+        // glClearColor(0.2f, 0.3f, 0.3f, 1.0f); // Set background color
         glClear(GL_COLOR_BUFFER_BIT);
 
-        glColor3f(1.0f, 1.0f, 1.0f); // Set drawing color to white
+        // glColor3f(1.0f, 1.0f, 1.0f); // Set drawing color to white
 
         // glClear(GL_COLOR_BUFFER_BIT);
-        glBegin(GL_TRIANGLE_FAN);
-        glVertex2d(centerX,centerY);
-
-        for (int i = 0; i < res; i++) {
-            float angle = 2.0f * 3.141592653589 * (static_cast<float>(i)/res);
-            float x = centerX + cos(angle) * radius;
-            float y = centerY + sin(angle) * radius;
-            glVertex2d(x,y);
+        for (auto& obj : objects) {
+            obj.checkBoundaries();
+            obj.updateKinematics();
+            obj.drawCircle();
         }
-
-        glEnd();
-
+        
         glfwSwapBuffers(window);
         glfwPollEvents();
     }
@@ -84,7 +134,8 @@ GLFWwindow* StartGLFW() {
     glfwMakeContextCurrent(window);
 
     return window;
-}
+}       
+
 
 // // Function prototypes
 // void framebuffer_size_callback(GLFWwindow* window, int width, int height);

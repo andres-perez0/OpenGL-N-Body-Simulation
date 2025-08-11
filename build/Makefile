@@ -161,17 +161,17 @@ depend:
 .PHONY : depend
 
 #=============================================================================
-# Target rules for targets named YourOpenGLProject
+# Target rules for targets named gravitySim
 
 # Build rule for target.
-YourOpenGLProject: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 YourOpenGLProject
-.PHONY : YourOpenGLProject
+gravitySim: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 gravitySim
+.PHONY : gravitySim
 
 # fast build rule for target.
-YourOpenGLProject/fast:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\YourOpenGLProject.dir\build.make CMakeFiles/YourOpenGLProject.dir/build
-.PHONY : YourOpenGLProject/fast
+gravitySim/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\gravitySim.dir\build.make CMakeFiles/gravitySim.dir/build
+.PHONY : gravitySim/fast
 
 #=============================================================================
 # Target rules for targets named uninstall
@@ -217,7 +217,7 @@ main.obj: main.cpp.obj
 
 # target to build an object file
 main.cpp.obj:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\YourOpenGLProject.dir\build.make CMakeFiles/YourOpenGLProject.dir/main.cpp.obj
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\gravitySim.dir\build.make CMakeFiles/gravitySim.dir/main.cpp.obj
 .PHONY : main.cpp.obj
 
 main.i: main.cpp.i
@@ -225,7 +225,7 @@ main.i: main.cpp.i
 
 # target to preprocess a source file
 main.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\YourOpenGLProject.dir\build.make CMakeFiles/YourOpenGLProject.dir/main.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\gravitySim.dir\build.make CMakeFiles/gravitySim.dir/main.cpp.i
 .PHONY : main.cpp.i
 
 main.s: main.cpp.s
@@ -233,7 +233,7 @@ main.s: main.cpp.s
 
 # target to generate assembly for a file
 main.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\YourOpenGLProject.dir\build.make CMakeFiles/YourOpenGLProject.dir/main.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\gravitySim.dir\build.make CMakeFiles/gravitySim.dir/main.cpp.s
 .PHONY : main.cpp.s
 
 # Help Target
@@ -250,8 +250,8 @@ help:
 	@echo ... rebuild_cache
 	@echo ... uninstall
 	@echo ... update_mappings
-	@echo ... YourOpenGLProject
 	@echo ... glfw
+	@echo ... gravitySim
 	@echo ... main.obj
 	@echo ... main.i
 	@echo ... main.s

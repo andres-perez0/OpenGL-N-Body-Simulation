@@ -62,12 +62,12 @@ CMAKE_BINARY_DIR = "C:\Users\aper1\Documents\Visual Studio Code\general_c\Rocket
 # Directory level rules for the build root directory
 
 # The main recursive "all" target.
-all: CMakeFiles/YourOpenGLProject.dir/all
+all: CMakeFiles/gravitySim.dir/all
 all: libs/glfw/all
 .PHONY : all
 
 # The main recursive "codegen" target.
-codegen: CMakeFiles/YourOpenGLProject.dir/codegen
+codegen: CMakeFiles/gravitySim.dir/codegen
 codegen: libs/glfw/codegen
 .PHONY : codegen
 
@@ -76,7 +76,7 @@ preinstall: libs/glfw/preinstall
 .PHONY : preinstall
 
 # The main recursive "clean" target.
-clean: CMakeFiles/YourOpenGLProject.dir/clean
+clean: CMakeFiles/gravitySim.dir/clean
 clean: libs/glfw/clean
 .PHONY : clean
 
@@ -144,36 +144,36 @@ libs/glfw/src/clean: libs/glfw/src/CMakeFiles/update_mappings.dir/clean
 .PHONY : libs/glfw/src/clean
 
 #=============================================================================
-# Target rules for target CMakeFiles/YourOpenGLProject.dir
+# Target rules for target CMakeFiles/gravitySim.dir
 
 # All Build rule for target.
-CMakeFiles/YourOpenGLProject.dir/all: libs/glfw/src/CMakeFiles/glfw.dir/all
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\YourOpenGLProject.dir\build.make CMakeFiles/YourOpenGLProject.dir/depend
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\YourOpenGLProject.dir\build.make CMakeFiles/YourOpenGLProject.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir="C:\Users\aper1\Documents\Visual Studio Code\general_c\Rocket Lander Simulation\build\CMakeFiles" --progress-num=1,2 "Built target YourOpenGLProject"
-.PHONY : CMakeFiles/YourOpenGLProject.dir/all
+CMakeFiles/gravitySim.dir/all: libs/glfw/src/CMakeFiles/glfw.dir/all
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\gravitySim.dir\build.make CMakeFiles/gravitySim.dir/depend
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\gravitySim.dir\build.make CMakeFiles/gravitySim.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir="C:\Users\aper1\Documents\Visual Studio Code\general_c\Rocket Lander Simulation\build\CMakeFiles" --progress-num=23,24 "Built target gravitySim"
+.PHONY : CMakeFiles/gravitySim.dir/all
 
 # Build rule for subdir invocation for target.
-CMakeFiles/YourOpenGLProject.dir/rule: cmake_check_build_system
+CMakeFiles/gravitySim.dir/rule: cmake_check_build_system
 	$(CMAKE_COMMAND) -E cmake_progress_start "C:\Users\aper1\Documents\Visual Studio Code\general_c\Rocket Lander Simulation\build\CMakeFiles" 24
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 CMakeFiles/YourOpenGLProject.dir/all
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 CMakeFiles/gravitySim.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start "C:\Users\aper1\Documents\Visual Studio Code\general_c\Rocket Lander Simulation\build\CMakeFiles" 0
-.PHONY : CMakeFiles/YourOpenGLProject.dir/rule
+.PHONY : CMakeFiles/gravitySim.dir/rule
 
 # Convenience name for target.
-YourOpenGLProject: CMakeFiles/YourOpenGLProject.dir/rule
-.PHONY : YourOpenGLProject
+gravitySim: CMakeFiles/gravitySim.dir/rule
+.PHONY : gravitySim
 
 # codegen rule for target.
-CMakeFiles/YourOpenGLProject.dir/codegen:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\YourOpenGLProject.dir\build.make CMakeFiles/YourOpenGLProject.dir/codegen
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir="C:\Users\aper1\Documents\Visual Studio Code\general_c\Rocket Lander Simulation\build\CMakeFiles" --progress-num=1,2 "Finished codegen for target YourOpenGLProject"
-.PHONY : CMakeFiles/YourOpenGLProject.dir/codegen
+CMakeFiles/gravitySim.dir/codegen:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\gravitySim.dir\build.make CMakeFiles/gravitySim.dir/codegen
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir="C:\Users\aper1\Documents\Visual Studio Code\general_c\Rocket Lander Simulation\build\CMakeFiles" --progress-num=23,24 "Finished codegen for target gravitySim"
+.PHONY : CMakeFiles/gravitySim.dir/codegen
 
 # clean rule for target.
-CMakeFiles/YourOpenGLProject.dir/clean:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\YourOpenGLProject.dir\build.make CMakeFiles/YourOpenGLProject.dir/clean
-.PHONY : CMakeFiles/YourOpenGLProject.dir/clean
+CMakeFiles/gravitySim.dir/clean:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\gravitySim.dir\build.make CMakeFiles/gravitySim.dir/clean
+.PHONY : CMakeFiles/gravitySim.dir/clean
 
 #=============================================================================
 # Target rules for target libs/glfw/CMakeFiles/uninstall.dir
@@ -214,7 +214,7 @@ libs/glfw/CMakeFiles/uninstall.dir/clean:
 libs/glfw/src/CMakeFiles/glfw.dir/all:
 	$(MAKE) $(MAKESILENT) -f libs\glfw\src\CMakeFiles\glfw.dir\build.make libs/glfw/src/CMakeFiles/glfw.dir/depend
 	$(MAKE) $(MAKESILENT) -f libs\glfw\src\CMakeFiles\glfw.dir\build.make libs/glfw/src/CMakeFiles/glfw.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir="C:\Users\aper1\Documents\Visual Studio Code\general_c\Rocket Lander Simulation\build\CMakeFiles" --progress-num=3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24 "Built target glfw"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir="C:\Users\aper1\Documents\Visual Studio Code\general_c\Rocket Lander Simulation\build\CMakeFiles" --progress-num=1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22 "Built target glfw"
 .PHONY : libs/glfw/src/CMakeFiles/glfw.dir/all
 
 # Build rule for subdir invocation for target.
@@ -231,7 +231,7 @@ glfw: libs/glfw/src/CMakeFiles/glfw.dir/rule
 # codegen rule for target.
 libs/glfw/src/CMakeFiles/glfw.dir/codegen:
 	$(MAKE) $(MAKESILENT) -f libs\glfw\src\CMakeFiles\glfw.dir\build.make libs/glfw/src/CMakeFiles/glfw.dir/codegen
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir="C:\Users\aper1\Documents\Visual Studio Code\general_c\Rocket Lander Simulation\build\CMakeFiles" --progress-num=3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24 "Finished codegen for target glfw"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir="C:\Users\aper1\Documents\Visual Studio Code\general_c\Rocket Lander Simulation\build\CMakeFiles" --progress-num=1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22 "Finished codegen for target glfw"
 .PHONY : libs/glfw/src/CMakeFiles/glfw.dir/codegen
 
 # clean rule for target.
