@@ -1,1 +1,0 @@
-  -LC:/Users/aper1/DOCUME~1/VISUAL~1/GENERA~2/ROCKET~1/libs/glew/lib/Release/x64  libs/glfw/src/libglfw3.a -lopengl32 -lglu32 -lglew32 -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32 

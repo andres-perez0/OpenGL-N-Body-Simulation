@@ -1,7 +1,7 @@
-prefix=C:/Program Files (x86)/YourOpenGLProject
+prefix=C:/Program Files (x86)/gravitySim
 exec_prefix=${prefix}
-includedir=C:/Program Files (x86)/YourOpenGLProject/include
-libdir=C:/Program Files (x86)/YourOpenGLProject/lib
+includedir=C:/Program Files (x86)/gravitySim/include
+libdir=C:/Program Files (x86)/gravitySim/lib
 
 Name: GLFW
 Description: A multi-platform library for OpenGL, window and input

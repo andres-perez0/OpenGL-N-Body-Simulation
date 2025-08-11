@@ -91,3 +91,22 @@ int main() {
 
 }
 ```
+
+- `glViewport(0,0,SCR_WIDTH, SCR_HEIGHT);`
+    - sets the bottom left corner to be 0,0
+    - sets the window to be render to be SCR_WIDTH and HEGHT
+    - sets up a mapping from noramlize device coordinates to widnow coodinates. 
+        - Sets the normal -1 to 1 to the pixel dimensions of your window
+- Orthographic Project Matrix Setup
+    - The following is a common set up for a 2D rendering because it projects objects onto the screen without any perspective distortion (objects don't appear smaller the further away they are)
+```c++
+// Setup an orthographic projection for 2D rendering
+    glMatrixMode(GL_PROJECTION);    // This tells OpenGl, we'll be modifying the projection matrix stack; aka transforming your 3D into a 2D space of the viewport
+    glLoadIdentity(); // Provides a clean state by changing the matrix into it's identity matrix
+    glOrtho(0.0, SCR_WIDTH, 0.0, SCR_HEIGHT, 0, 1); 
+    // Sets up the boundaries
+    // First four parameters are pretty self explanatory
+    // 0, 1 are the near and far clipping planes, they define the depth of the viewing box on the z-axis, so like Anything beyond 0 and 1 in the Z-Axis will not be rendered
+    glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();
+```

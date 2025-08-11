@@ -203,7 +203,7 @@
 		],
 		"prefix" : 
 		{
-			"path" : "C:/Program Files (x86)/YourOpenGLProject"
+			"path" : "C:/Program Files (x86)/gravitySim"
 		}
 	},
 	"name" : "glfw",
