@@ -16,9 +16,13 @@ GLFWwindow *StartGLFW();
 const unsigned int SCR_WIDTH=1000;
 const unsigned int SCR_HEIGHT=800;
 
+#define G_CONSTANT 6.674e-11
+#define E_M_DIST 384400*1000
 // Function prototypes
 void processInput(GLFWwindow* window);
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
+float graviationForce(float m1, float m2, float r);
+float accValue(float G_Force, float m);
 
 struct obj {
     public: 
@@ -38,16 +42,26 @@ struct obj {
         this->res           = 300.0f;
     }
 
-    void updateKinematics(float deltaTime) {
-        this->velocity[0] += 7* this->acceleration[0]  * deltaTime;
-        this->velocity[1] += 7* this->acceleration[1]  * deltaTime;
+    // void updateKinematics(float deltaTime, float acc) {
+    //     this->velocity[0] += acc * deltaTime;
+    //     this->velocity[1] += acc * deltaTime;
 
-        this->position[0] += this->velocity[0]      * deltaTime;
-        this->position[1] += this->velocity[1]      * deltaTime;
+    //     this->position[0] += this->velocity[0] * deltaTime;
+    //     this->position[1] += this->velocity[1] * deltaTime;
+    // }
+
+    void accelerate(float x, float y) {
+        this->velocity[0] += x;
+        this->velocity[1] += y;
+    }
+
+    void updatePos() {
+        this->position[0] += this->velocity[0];
+        this->position[1] += this->velocity[1];
     }
 
     void checkBoundaries() {
-        float reverseVelocity=-0.95;
+        float reverseVelocity=-0.9;
         if ((this->position[1] - this->radius) < 0 ) {
             this->velocity[1] *= reverseVelocity;
             this->position[1] = this->radius;
@@ -78,8 +92,11 @@ struct obj {
         float currentCollisionDistance = centerFromDistance(this->position[0], this->position[1], obj2.position[0], obj2.position[1]);
 
         if (currentCollisionDistance <= minCollisionDistance) {
-            this->velocity[1] *= -1;
-            obj2.velocity[1] *= -1;
+            this->velocity[1] *= -0.9;
+            obj2.velocity[1] *= -0.9;
+
+            this->velocity[0] *= -0.9;
+            obj2.velocity[0] *= -0.9;
         }
     }
 
@@ -108,18 +125,21 @@ int main() {
     int initialWidth, initialHeight;
     glfwGetFramebufferSize(window, &initialWidth, &initialHeight);
     framebuffer_size_callback(window, initialWidth, initialHeight);
-
     float centerX = SCR_WIDTH/2.0f;
-    float centerY = SCR_HEIGHT/4.0f;
-    std::vector<float> position = {centerX, centerY};
-    std::vector<float> velocity = {0.0f, 0.0f};
-    std::vector<float> acceleration = {0, -9.81f};
+    float centerY = SCR_HEIGHT/2.0f;
+
+    std::vector<float> acceleration = {0.0f, 0.0f};
     float radius = 50.0f;
-    int res =100;
+
+    float moonRadius =  1737.4*1000; // km -> m
+    float moonMass = 7.346e+22; // * 10^22 kg
+    float earthMass = 5.9722e+24;// *10^24
+    float earthRadius = 6378*1000; // km -> m 
 
     std::vector<obj> objects = {
-        obj({centerX, 450.0f}, velocity, acceleration, 30.0f, 20),
-        obj({centerX, 200.0f}, velocity, acceleration, 40.0f, 50)
+        obj({centerX, centerY-200}, {1, 0.0}, {0.0, 0.0}, 20, moonMass),
+        obj({centerX, centerY}, {0.0 , 0.0}, {0.0, 0.0}, 40, moonMass),
+        obj({centerX, centerY+200}, {-1 , 0.0}, {0.0, 0.0}, 20, moonMass)
     };
     
     float lastTime=glfwGetTime();
@@ -135,10 +155,28 @@ int main() {
         deltaTime = currentTime - lastTime;
         lastTime = currentTime;
 
-        // Update the kinematics first
         for (auto& obj : objects) {
-            obj.updateKinematics(deltaTime);
-            
+            for (auto& obj2 : objects) {
+                if (&obj == &obj2) {continue;} // Ensure that they we calculating opposite to one another 
+
+                // We find the differences between the objects
+                float dy = obj2.position[1] - obj.position[1];
+                float dx = obj2.position[0] - obj.position[0];
+                float r = std::sqrt(dy*dy + dx*dx);
+
+                // direction vector that holds the ratios for sin(theta) and cos(theta)
+                std::vector<float> direction = {dx / r, dy / r};
+
+                r *= 100000;
+
+                float ForceGravity = (G_CONSTANT * obj.mass * obj2.mass) / (r*r); 
+                // x component = Force from gravity times the cos(theta) equivalent ratio) divided by the mass
+                acceleration[0] = (ForceGravity * direction[0]) / obj.mass;
+                acceleration[1] = (ForceGravity * direction[1]) / obj.mass;
+
+                obj.accelerate(acceleration[0], acceleration[1]);    
+            }
+            obj.updatePos();
         }
 
         // Check for position between all unique pairs 
@@ -213,3 +251,10 @@ void processInput(GLFWwindow *window) {
     }
 }
 
+float graviationForce(float m1, float m2, float r) {
+    return (G_CONSTANT * m1 * m2) / (r*r);
+}
+
+float accValue(float G_Force, float m) {
+    return G_Force/m;
+}
