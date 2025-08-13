@@ -13,8 +13,8 @@
 GLFWwindow *StartGLFW();
 
 // Window dimensions
-const unsigned int SCR_WIDTH=1000;
-const unsigned int SCR_HEIGHT=800;
+const unsigned int SCR_WIDTH  = 1200;
+const unsigned int SCR_HEIGHT = 1200;
 
 #define G_CONSTANT 6.674e-11
 #define E_M_DIST 384400*1000
@@ -41,14 +41,6 @@ struct obj {
         this->mass          = m;
         this->res           = 300.0f;
     }
-
-    // void updateKinematics(float deltaTime, float acc) {
-    //     this->velocity[0] += acc * deltaTime;
-    //     this->velocity[1] += acc * deltaTime;
-
-    //     this->position[0] += this->velocity[0] * deltaTime;
-    //     this->position[1] += this->velocity[1] * deltaTime;
-    // }
 
     void accelerate(float x, float y) {
         this->velocity[0] += x;
@@ -114,6 +106,8 @@ struct obj {
     }
 };
 
+GLfloat pointVertex = {};
+
 int main() {
     GLFWwindow* window = StartGLFW();
 
@@ -137,9 +131,11 @@ int main() {
     float earthRadius = 6378*1000; // km -> m 
 
     std::vector<obj> objects = {
-        obj({centerX, centerY-200}, {1, 0.0}, {0.0, 0.0}, 20, moonMass),
-        obj({centerX, centerY}, {0.0 , 0.0}, {0.0, 0.0}, 40, moonMass),
-        obj({centerX, centerY+200}, {-1 , 0.0}, {0.0, 0.0}, 20, moonMass)
+        obj({centerX-200, centerY}, {0.0, 1.0}, {0.0, 0.0}, 20, moonMass*1.5),
+        obj({centerX+200, centerY}, {0.0 , -1.0}, {0.0, 0.0}, 20, moonMass*1.5),
+        // obj({centerX, centerY+200}, {1.0, 0.0}, {0.0, 0.0}, 20, moonMass*1.5),
+        // obj({centerX, centerY-200}, {-1.0 , 0.0}, {0.0, 0.0}, 20, moonMass*1.5),
+        // obj({centerX, centerY+200}, {-1 , 0.0}, {0.0, 0.0}, 20, moonMass)
     };
     
     float lastTime=glfwGetTime();
@@ -189,7 +185,6 @@ int main() {
 
         // Draw after everything is calculated
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
         for (auto& obj : objects) {
             obj.drawCircle();
         }

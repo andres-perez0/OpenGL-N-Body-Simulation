@@ -110,3 +110,7 @@ int main() {
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
 ```
+
+- The difference uses of the `for(auto% element : container)` vs nested for loops for computation
+    - In the program I originally try to use a range based loop to calculate the collisions with, but if you use a range based loop for this. There is no way to avoid checking 1 to 2 and 2 to 1. So this is why you have to use a nested for-loop with an offset. 
+    - while calculating the forces for the object, we don't actually mind this, it's actually what we want since they experiences the same forces from gravity, so with the include of the `if (&obj == & obj2) {continue;}` to avoid checking it with itself, we can calculate the forces of gravity with this method. 
