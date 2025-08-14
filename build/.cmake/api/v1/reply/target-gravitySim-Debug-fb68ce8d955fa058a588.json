@@ -30,7 +30,7 @@
 			{
 				"command" : 0,
 				"file" : 0,
-				"line" : 28,
+				"line" : 29,
 				"parent" : 0
 			},
 			{
@@ -42,7 +42,7 @@
 			{
 				"command" : 2,
 				"file" : 0,
-				"line" : 31,
+				"line" : 32,
 				"parent" : 0
 			},
 			{
@@ -71,6 +71,10 @@
 				{
 					"backtrace" : 4,
 					"path" : "C:/Users/aper1/Documents/Visual Studio Code/general_c/Rocket Lander Simulation/libs/glew/include"
+				},
+				{
+					"backtrace" : 4,
+					"path" : "C:/Users/aper1/Documents/Visual Studio Code/general_c/Rocket Lander Simulation/libs/glm"
 				}
 			],
 			"language" : "CXX",

@@ -16,6 +16,7 @@ link_directories(
 include_directories(
     libs/glfw/include
     libs/glew/include
+    libs/glm/
     
 )
 

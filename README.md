@@ -114,3 +114,22 @@ int main() {
 - The difference uses of the `for(auto% element : container)` vs nested for loops for computation
     - In the program I originally try to use a range based loop to calculate the collisions with, but if you use a range based loop for this. There is no way to avoid checking 1 to 2 and 2 to 1. So this is why you have to use a nested for-loop with an offset. 
     - while calculating the forces for the object, we don't actually mind this, it's actually what we want since they experiences the same forces from gravity, so with the include of the `if (&obj == & obj2) {continue;}` to avoid checking it with itself, we can calculate the forces of gravity with this method. 
+
+- `static_cast<float>` is a C++ type-casting operator used to convert one data type into another at compile time. 
+
+
+- Shaders are small programs that run directly on the GPU. Usually written in a C-like language called GLSL (OpenGL Shading Language). The primary purpose of the shader is to replace the old, fixed-function pipeline of graphics rendering, giving developers full control over how geometry is processed and how pixels are colored.
+    - <u>Vertex Shader:</u> Runs once every vertex you draw. Its main job is to transform the 3D position of each vertex into a 2D position on your screen.
+    - <u>Fragment Shader:</u> Runs once for every "fragment" (essentially a pixel) that makes up the final rendered shape. Its main job is to determine the final color of that fragment. 
+- Graphics Pipeline 
+    1. C++ Application: I definite the geometry of the objects and sends them to the GPU
+    2. Vertex Shader(`vertexShaderSource`): GPU runs this shader on each vertez. It takes the vertex position and calculates its final screen position and the other per-vertex data
+    3. Rasterization: The gpu takes the transformed vertices and figures out which pixels on the screen are covered by the object's triangles
+    4. Fragment Shader(`fragmentShaderSource`): GPU runs this shader on each of those covered pixels. It takes the data passed from the vertex shader and determines the pixel's final color.
+    5. Screen Output
+
+
+- SMART POINTERS - Essentially a wrapper over a pointer, where it automatically frees a pointer.
+    - `std::unique_ptr, std::shared_ptr, std::weak_ptr`
+    - `std::unique`
+        - 

@@ -144,6 +144,10 @@
 					"path" : "C:/Users/aper1/Documents/Visual Studio Code/general_c/Rocket Lander Simulation/libs/glew/include"
 				},
 				{
+					"backtrace" : 8,
+					"path" : "C:/Users/aper1/Documents/Visual Studio Code/general_c/Rocket Lander Simulation/libs/glm"
+				},
+				{
 					"backtrace" : 9,
 					"path" : "C:/Users/aper1/Documents/Visual Studio Code/general_c/Rocket Lander Simulation/libs/glfw/src"
 				},
