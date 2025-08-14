@@ -20,7 +20,12 @@ const unsigned int SCR_WIDTH  = 1200;
 const unsigned int SCR_HEIGHT = 1200;
 
 #define G_CONSTANT 6.674e-11
-#define E_M_DIST 384400*1000
+#define MOON_MASS 7.346e+22 // * 10^22 kg
+#define MOON_RADIUS 1737.4*1000; // km -> m
+#define EARTH_MASS 5.9722e+24;// *10^24
+#define EARTH_RADIUS 6378*1000; // km -> m 
+
+
 // Function prototypes
 void processInput(GLFWwindow* window);
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
@@ -29,7 +34,10 @@ float accValue(float G_Force, float m);
 
 struct body {
     glm::vec2 position;
+    glm::vec3 velocity;
+    glm::vec3 acceleration;
     glm::vec3 color;
+    float mass;
     float radius; 
     int res;
     
@@ -38,9 +46,10 @@ struct body {
         this->radius = rad;
         this->color = col;
         res = 300;
+        mass = EARTH_MASS;
     };
     
-    void render() {
+    void render() const {
         glBegin(GL_TRIANGLE_FAN);
         glVertex2d(position.x, position.y);
         for (int i = 0; i < this->res; i++) {
@@ -50,6 +59,84 @@ struct body {
             glVertex2d(x, y);
         }
         glEnd();
+    }
+
+    void update (float deltaTime) {
+        velocity.x += acceleration.x * deltaTime;
+        velocity.y += acceleration.y * deltaTime;
+
+        position.x += velocity.x * deltaTime;
+        position.y += velocity.y * deltaTime;
+    }
+
+    void addForce (const glm::vec2 &force) {
+        // std::cout << "force in the x direction " << force.x << std::endl;
+        // std::cout << "force in the y direction " << force.y << std::endl;
+        acceleration.x = force.x / mass;
+        acceleration.y = force.y / mass;
+    }
+
+    void resetAcceleration() {
+        acceleration.x = 0.0;
+        acceleration.y = 0.0;
+    }
+};
+
+struct simulation {
+    float deltaTime;
+    glm::vec2 cameraOffset;
+    float zoomLevel;
+    std::vector<std::unique_ptr<body>> objects;
+
+    simulation() {}
+
+    // simulation(std::vector<std::unique_ptr<body>> obj) {
+    //     this->objects=obj;
+    // }
+
+    float dy, dx, dis, gravForce;
+    std::vector<float> direction;
+    glm::vec2 partialForces;
+
+    void initilaize() {
+        objects.emplace_back(new body(glm::vec2 (3.0f * SCR_WIDTH/4.0f, SCR_HEIGHT/2.0f), 10.0f, glm::vec3(1.0f, 1.0f, 1.0f)));
+        objects.emplace_back(new body(glm::vec2 (SCR_WIDTH/2.0f, SCR_HEIGHT/2.0f), 10.0f, glm::vec3(1.0f, 1.0f, 1.0f)));
+        // objects.emplace_back(new body(glm::vec2 (SCR_WIDTH/4.0f, SCR_HEIGHT/2.0f), 10.0f, glm::vec3(1.0f, 1.0f, 1.0f)));
+    }
+
+    void update(float deltaTime) {
+        // Resets the forces of all the objects
+        for (auto& obj : objects) {
+            obj->resetAcceleration();
+        }
+
+        // Calculates the forces of gravity between objects
+        for (auto& obj1 : objects) {
+            for (auto& obj2 : objects) {
+                if (&obj1 == &obj2) {continue;}
+                dy = obj2->position.y - obj1->position.y;
+                dx = obj2->position.x - obj1->position.x;
+                dis = std::sqrt(dy*dy + dx*dx);
+                // std::cout << "dy | dx | dis " << dy << dx << dis << std::endl; // Correct numbers
+                direction = {dx/dis, dy/dis};
+
+                dis *= 100000; // Scaling Factor
+                
+                // std::cout << "cos(theta) | sin(theta) " << direction[0] << " " << direction [1] << std::endl; // Correct Numbers
+                gravForce = G_CONSTANT * obj2->mass * obj1->mass / (dis* dis);
+                
+                partialForces.x = gravForce * direction[0];
+                partialForces.y = gravForce * direction[1];
+                
+                obj1->addForce(partialForces);
+                obj1->update(deltaTime);
+            }
+        }
+
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        for (auto& obj: objects) {
+            obj->render();
+        }   
     }
 };
 
@@ -71,11 +158,8 @@ int main() {
     float currentTime, deltaTime;
     int i, j;
 
-    std::vector<std::unique_ptr<body>> objects;
-    objects.emplace_back(new body(glm::vec2 (3.0f * SCR_WIDTH/4.0f, SCR_HEIGHT/2.0f), 10.0f, glm::vec3(1.0f, 1.0f, 1.0f)));
-    objects.emplace_back(new body(glm::vec2 (SCR_WIDTH/2.0f, SCR_HEIGHT/2.0f), 10.0f, glm::vec3(1.0f, 1.0f, 1.0f)));
-    objects.emplace_back(new body(glm::vec2 (SCR_WIDTH/4.0f, SCR_HEIGHT/2.0f), 10.0f, glm::vec3(1.0f, 1.0f, 1.0f)));
-
+    simulation sim = simulation();
+    sim.initilaize();
     glfwSwapInterval(1);
 
     while (!glfwWindowShouldClose(window)) {
@@ -85,10 +169,7 @@ int main() {
         deltaTime = currentTime - lastTime;
         lastTime = currentTime;
 
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-        for (auto& obj: objects) {
-            obj->render();
-        }
+        sim.update(deltaTime);
 
         glfwSwapBuffers(window);
         glfwPollEvents();
