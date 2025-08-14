@@ -34,12 +34,14 @@ float accValue(float G_Force, float m);
 
 struct body {
     glm::vec2 position;
+    glm::vec2 prevPosition;
     glm::vec3 velocity;
     glm::vec3 acceleration;
     glm::vec3 color;
     float mass;
     float radius; 
     int res;
+    bool timeState;
     
     body(glm::vec2 pos, float rad, glm::vec3 col) {  
         this->position = pos;
@@ -47,6 +49,7 @@ struct body {
         this->color = col;
         res = 300;
         mass = EARTH_MASS;
+        timeState = 1;
     };
     
     void render() const {
@@ -67,6 +70,14 @@ struct body {
 
         position.x += velocity.x * deltaTime;
         position.y += velocity.y * deltaTime;
+
+    }
+
+    void updateVerlet(float deltaTime) {
+        glm::vec2 currPosition = position;
+        position.x = -prevPosition.x + (2*currPosition.x) + (acceleration.x*deltaTime*deltaTime);
+        position.y = -prevPosition.y + (2*currPosition.y) + (acceleration.y*deltaTime*deltaTime);
+        prevPosition = currPosition; 
     }
 
     void addForce (const glm::vec2 &force) {
@@ -121,7 +132,7 @@ struct simulation {
                 direction = {dx/dis, dy/dis};
 
                 dis *= 100000; // Scaling Factor
-                
+
                 // std::cout << "cos(theta) | sin(theta) " << direction[0] << " " << direction [1] << std::endl; // Correct Numbers
                 gravForce = G_CONSTANT * obj2->mass * obj1->mass / (dis* dis);
                 
@@ -129,7 +140,13 @@ struct simulation {
                 partialForces.y = gravForce * direction[1];
                 
                 obj1->addForce(partialForces);
-                obj1->update(deltaTime);
+
+                if (obj1->timeState) {
+                    obj1->update(deltaTime);
+                    std::cout<<"changedTimeState"<<std::endl;
+                } else {
+                    obj1->updateVerlet(deltaTime);
+                }
             }
         }
 
