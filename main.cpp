@@ -33,11 +33,17 @@ float graviationForce(float m1, float m2, float r);
 float accValue(float G_Force, float m);
 
 struct body {
+    std::vector<glm::vec2> trails;    
+
+    glm::vec2 currPosition;
     glm::vec2 position;
     glm::vec2 prevPosition;
+
     glm::vec3 velocity;
     glm::vec3 acceleration;
+    
     glm::vec3 color;
+    
     float mass;
     float radius; 
     int res;
@@ -51,7 +57,7 @@ struct body {
         mass = EARTH_MASS;
         timeState = 1;
     };
-    
+        
     void render() const {
         glBegin(GL_TRIANGLE_FAN);
         glVertex2d(position.x, position.y);
@@ -62,23 +68,37 @@ struct body {
             glVertex2d(x, y);
         }
         glEnd();
+
+        glEnableClientState( GL_VERTEX_ARRAY );
+        glVertexPointer(2, GL_FLOAT, 0, trails.data());
+        glDrawArrays( GL_LINE_STRIP, 0, trails.size());
+        glDisableClientState( GL_VERTEX_ARRAY );
     }
 
     void update (float deltaTime) {
+        prevPosition = position;
         velocity.x += acceleration.x * deltaTime;
         velocity.y += acceleration.y * deltaTime;
 
         position.x += velocity.x * deltaTime;
         position.y += velocity.y * deltaTime;
-
+        
+        trails.push_back(position);
+        timeState = 0;
     }
 
     void updateVerlet(float deltaTime) {
-        glm::vec2 currPosition = position;
+        currPosition = position;
         position.x = -prevPosition.x + (2*currPosition.x) + (acceleration.x*deltaTime*deltaTime);
         position.y = -prevPosition.y + (2*currPosition.y) + (acceleration.y*deltaTime*deltaTime);
         prevPosition = currPosition; 
+
+        trails.push_back(position);
+        if (trails.size() > 300) {
+            trails.erase(trails.begin());
+        }
     }
+
 
     void addForce (const glm::vec2 &force) {
         // std::cout << "force in the x direction " << force.x << std::endl;
@@ -91,6 +111,11 @@ struct body {
         acceleration.x = 0.0;
         acceleration.y = 0.0;
     }
+
+    void setVelocity(float x, float y) {
+        velocity.x = x;
+        velocity.y = y;
+    }
 };
 
 struct simulation {
@@ -100,10 +125,6 @@ struct simulation {
     std::vector<std::unique_ptr<body>> objects;
 
     simulation() {}
-
-    // simulation(std::vector<std::unique_ptr<body>> obj) {
-    //     this->objects=obj;
-    // }
 
     float dy, dx, dis, gravForce;
     std::vector<float> direction;
@@ -143,7 +164,7 @@ struct simulation {
 
                 if (obj1->timeState) {
                     obj1->update(deltaTime);
-                    std::cout<<"changedTimeState"<<std::endl;
+                    // std::cout<<"changedTimeState"<<std::endl;
                 } else {
                     obj1->updateVerlet(deltaTime);
                 }
@@ -177,6 +198,9 @@ int main() {
 
     simulation sim = simulation();
     sim.initilaize();
+    sim.objects[0]->setVelocity(0, 1500);
+    sim.objects[1]->setVelocity(0,-1500);
+
     glfwSwapInterval(1);
 
     while (!glfwWindowShouldClose(window)) {
