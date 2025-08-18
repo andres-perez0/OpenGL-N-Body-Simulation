@@ -1,17 +1,17 @@
-// #include "body.h"
+#include "Vector2D.h"
+#include <memory>
+#include <iostream>
 
 // GLAD must be included before GLFW
 // #include <glad/glad.h>
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
-#include <glm/gtc/matrix_transform.hpp>
-#include <glm/gtc/type_ptr.hpp> // Required for glm::value_ptr'
+#include <glm/gtc/type_ptr.hpp> // Required for glm::value_ptr
 
+// From the video 
 #include <cmath>
 #include <vector>
-#include <memory>
-#include <iostream>
 
 GLFWwindow *StartGLFW();
 
@@ -21,9 +21,10 @@ const unsigned int SCR_HEIGHT = 1200;
 
 #define G_CONSTANT 6.674e-11
 #define MOON_MASS 7.346e+22 // * 10^22 kg
-#define MOON_RADIUS 1737.4*1000 // km -> m
-#define EARTH_MASS 5.9722e+24 // *10^24
-#define EARTH_RADIUS 6378*1000  // km -> m 
+#define MOON_RADIUS 1737.4*1000; // km -> m
+#define EARTH_MASS 5.9722e+24;// *10^24
+#define EARTH_RADIUS 6378*1000; // km -> m 
+
 
 // Function prototypes
 void processInput(GLFWwindow* window);
@@ -65,7 +66,6 @@ struct body {
             float x = position.x + cos(angle) * this->radius;  
             float y = position.y + sin(angle) * this->radius;  
             glVertex2d(x, y);
-            
         }
         glEnd();
 
@@ -73,80 +73,6 @@ struct body {
         glVertexPointer(2, GL_FLOAT, 0, trails.data());
         glDrawArrays( GL_LINE_STRIP, 0, trails.size());
         glDisableClientState( GL_VERTEX_ARRAY );
-    }
-
-    void rendor3D(float centerX, float centerY, float centerZ, float r) const {
-        std::vector<glm::vec3> position3D;
-        glm::vec3 currPos3D;
-        int sectorRes = 36;
-        int stackRes = 18;
-
-        int sectorStep, stackStep;
-        float dTheta, dPhi;
-
-        glBegin(GL_TRIANGLE_FAN);
-        glVertex3d(centerX, centerY, centerZ);
-
-        for (sectorStep = 0; sectorStep < sectorRes; sectorStep++) {
-            dTheta = 2.0f * M_PI * (static_cast<float>(sectorStep) /sectorRes);
-
-            for (stackStep = 0; stackStep < stackRes; stackStep++) {
-                dPhi = (M_PI / 2.0f) - M_PI * (static_cast<float>(stackStep) / stackRes);
-                currPos3D.x = (r * std::cos(dPhi)) * std::cos(dTheta);
-                currPos3D.y = (r * std::cos(dPhi)) * std::sin(dTheta);
-                currPos3D.z = r * std::sin(dPhi);
-                glVertex3d(currPos3D.x, currPos3D.y, currPos3D.z);
-                position3D.push_back(currPos3D);
-                std::cout<<"position x | y | z " << currPos3D.x << ", " << currPos3D.y << ", " << currPos3D.z << std::endl;
-                // std::cout<<"x | y | z : " << dTheta << ", " << dPhi << std::endl;
-            }
-        }
-        glEnd();
-        // generate CCW index list of sphere triangles
-        // k1--k1+1
-        // |  / |
-        // | /  |
-        // k2--k2+1
-
-        // std::vector<int> indices;
-        // std::vector<int> lineIndices;
-        // int k1, k2;
-        // for(int i = 0; i < stackRes; ++i)
-        // {
-        //     k1 = i * (sectorRes + 1);     // beginning of current stack
-        //     k2 = k1 + sectorRes + 1;      // beginning of next stack
-
-        //     for(int j = 0; j < sectorRes; ++j, ++k1, ++k2)
-        //     {
-        //         // 2 triangles per sector excluding first and last stacks
-        //         // k1 => k2 => k1+1
-        //         if(i != 0)
-        //         {
-        //             indices.push_back(k1);
-        //             indices.push_back(k2);
-        //             indices.push_back(k1 + 1);
-        //         }
-
-        //         // k1+1 => k2 => k2+1
-        //         if(i != (stackRes-1))
-        //         {
-        //             indices.push_back(k1 + 1);
-        //             indices.push_back(k2);
-        //             indices.push_back(k2 + 1);
-        //         }
-
-        //         // store indices for lines
-        //         // vertical lines for all stacks, k1 => k2
-        //         lineIndices.push_back(k1);
-        //         lineIndices.push_back(k2);
-        //         if(i != 0)  // horizontal lines except 1st stack, k1 => k+1
-        //         {
-        //             lineIndices.push_back(k1);
-        //             lineIndices.push_back(k1 + 1);
-        //         }
-        //     }
-        // }
-        
     }
 
     void update (float deltaTime) {
@@ -276,9 +202,6 @@ int main() {
     sim.initilaize();
     sim.objects[0]->setVelocity(0, 1500);
     sim.objects[1]->setVelocity(0,-1500);
-
-    body example = body(glm::vec2 (3.0f * SCR_WIDTH/4.0f, SCR_HEIGHT/2.0f), 10.0f, glm::vec3(1.0f, 1.0f, 1.0f));
-
 
     glfwSwapInterval(1);
 

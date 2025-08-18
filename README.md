@@ -133,3 +133,27 @@ int main() {
     - `std::unique_ptr, std::shared_ptr, std::weak_ptr`
     - `std::unique`
         - 
+
+
+- Front and back buffers
+
+Vertex Data[]
+- Vertex Shader
+- Shape Assembly
+- Geometry Shader
+- Rasterization Phase; shapes -> triangles
+- Fragment Shader; adds the colors depeneding on lighting shadows, etc etc
+- Tests and blending 
+
+- Coodinates systems are normalized;
+left (-1) 
+
+- When we send stuff between the gpu and cpu, it takes time, so we send in huge chunks called buffers
+- indice verteices! 
+- things i need to add
+    - Shaders
+    - creating spheres!?!
+        - $d{\theta} & d{\phi}$
+    - Moving to visual studios and back to GLAD
+    - Quiz on object creation, class writting, converting structs into classe and classes into structs
+    
