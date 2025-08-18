@@ -93,7 +93,7 @@ int main() {
 	GLuint VAO, VBO, EBO; 
 	// Vertex Array Object 
 	// Vertex Buffer Object 
-	// 
+	// Element Buffer Object
 	// Genertae the VAO and VBO with one object each
 	glGenVertexArrays(1, &VAO); //order is critical
 	glGenBuffers(1, &VBO);
@@ -105,6 +105,7 @@ int main() {
 	// Introduce the vertices inot the VBO
 	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 
+	// Binds the element array object
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
 	// Configure the vertex attribute so that OpenGL knows how to read the VBO
@@ -113,8 +114,9 @@ int main() {
 	// Enable the Vertex attribute so that open gl knows to use it
 	glEnableVertexAttribArray(0);
 	// Bind both the VBO and VAO to 0 so that we don't accidentally modify the VAO and VBOwe created
-	glBindBuffer(GL_ARRAY_BUFFER, 0);	// VBO
-	glBindVertexArray(0);				// VAO
+	glBindBuffer(GL_ARRAY_BUFFER, 0);			// VBO
+	glBindVertexArray(0);						// VAO
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);	// EBO
 
 	while (!glfwWindowShouldClose(window)) {
 		glClearColor(0.07f, 0.13f, 0.17f, 1.0f);
@@ -124,6 +126,7 @@ int main() {
 		glUseProgram(shaderProgram);
 		// Bind the VAO so OpenGl knows to use it
 		glBindVertexArray(VAO);
+		// primate | indices we want to draw | dt of indices | index of our indices
 		glDrawElements(GL_TRIANGLES, 9,GL_UNSIGNED_INT, 0);
 
 		glfwSwapBuffers(window);
